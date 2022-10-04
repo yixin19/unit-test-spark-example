@@ -7,6 +7,7 @@ from pyspark.sql import DataFrame, SparkSession
 
 # 1. Extract: from csv ./raw/pitags.csv
 # 2. Transform: if there's "." at the end of pitag name, remove last ".".
+#   hint: use expresion `when` and `substring`
 # 3. load the data into bronze layer
 
 class PitagsJob:
@@ -16,7 +17,8 @@ class PitagsJob:
             .getOrCreate()
 
     def extract(self) -> DataFrame:
-        pass
+        return self.spark.read.options(inferSchema='True', delimiter=';', header='True').format("csv").load(
+            "../raw/pitags.csv")
 
     def transform(self, pitags_df: DataFrame) -> DataFrame:
         pass
